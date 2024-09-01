@@ -1,0 +1,28 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112!"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112)"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+t
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+t
+java:S2142 "^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+t
+java:S2142("^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+A
+java:S1860<"&Synchronize on a new "Object" instead.(íÃÁ„ùÿÿÿÿ
+N	java:S106="9Replace this use of System.out or System.err by a logger.(Å”ÿä
+Y
+java:S2276>"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
+S	java:S106?"9Replace this use of System.out or System.err by a logger.(äõûÿÿÿÿ
+<
+java:S1860E"&Synchronize on a new "Object" instead.(Ú¦ìÒ
+S	java:S106F"9Replace this use of System.out or System.err by a logger.(æÇñÿÿÿÿÿ
+Y
+java:S2276G"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
+N	java:S106H"9Replace this use of System.out or System.err by a logger.(ˆíÇí
+S	java:S106O"9Replace this use of System.out or System.err by a logger.(Ùˆíùÿÿÿÿ
+Y
+java:S2276P"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
+N	java:S106Q"9Replace this use of System.out or System.err by a logger.(¡£ø
+=
+java:S10689"'Remove this unused "obj" private field.(½¾ë­

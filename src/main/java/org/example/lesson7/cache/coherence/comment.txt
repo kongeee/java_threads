@@ -1,0 +1,8 @@
+Farklı cpularda veye cpu corelarında bulunan threadlerin L1 L2 L3 cacheleri arasında veri alışverişi yapılabilir.
+Buna Cache Coherence denir.
+
+volatile bir veri yazılırken veya sync bloğundan çıkarken veriler cpu registerlerından main memory'e doğru bi yönde yazılırlar
+önce L1 cache sonra L2, L3 ve en sonunda memorye yazılabilirler.
+Ama direkt olarak main memorye yazmak yerine sadece L1 e de yazabilirler. L1 cache tüm threadler tarafından okunabildiği için sorun olmayacaktır.
+
+Okurken de önce cachelerden okur orada bulamzsa main memorye gider

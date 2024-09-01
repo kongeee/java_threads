@@ -1,0 +1,9 @@
+
+\
+java:S4065"FReplace this anonymous class with a call to "ThreadLocal.withInitial".(ü›æÞ
+E	java:S106"+Replace this use of System.out by a logger.(ìÀ¾üüÿÿÿÿ
+E	java:S106"+Replace this use of System.out by a logger.(•¤·Ìüÿÿÿÿ
+@	java:S106"+Replace this use of System.out by a logger.(Ô·’Ø
+E	java:S106"+Replace this use of System.out by a logger.(ÌÇ¨ñùÿÿÿÿ
+@	java:S106""+Replace this use of System.out by a logger.(¦û•¹
+E	java:S106%"+Replace this use of System.out by a logger.(ìÁ––üÿÿÿÿ

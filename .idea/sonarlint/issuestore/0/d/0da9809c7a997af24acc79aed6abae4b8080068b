@@ -1,0 +1,17 @@
+
+`	java:S112?"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+G
+java:S1602",Remove useless curly braces around statement(…ÒÑˆøÿÿÿÿ
+T
+java:S1612"9Replace this lambda with method reference 'myClass::inc'.(…ÒÑˆøÿÿÿÿ
+B
+java:S1602",Remove useless curly braces around statement(¼¤³¬
+N	java:S106"9Replace this use of System.out or System.err by a logger.(°¬··
+<
+java:S1860&"&Synchronize on a new "Object" instead.(ã¾Óá
+S	java:S106)"9Replace this use of System.out or System.err by a logger.(ÑÆœ¹üÿÿÿÿ
+N	java:S1064"9Replace this use of System.out or System.err by a logger.(“þï¸
+t
+java:S2142>"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+E
+java:S1144;"*Remove this unused private "sleep" method.(ÎÒž¦ýÿÿÿÿ

@@ -1,0 +1,13 @@
+
+g	java:S112$"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8Í©„½ÿ1
+N	java:S106"9Replace this use of System.out or System.err by a logger.(¯ñêš
+S	java:S106"9Replace this use of System.out or System.err by a logger.(…İÚ®ÿÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(´¢ÁÌşÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ØÊ„
+S	java:S106"9Replace this use of System.out or System.err by a logger.(¯œÔÓıÿÿÿÿ
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ñ½±õøÿÿÿÿ
+{
+java:S2142#"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€8Ø©„½ÿ1
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(½ˆá«ùÿÿÿÿ
+S	java:S106+"9Replace this use of System.out or System.err by a logger.(…İÚ®ÿÿÿÿÿ
+S	java:S106,"9Replace this use of System.out or System.err by a logger.(´¢ÁÌşÿÿÿÿ
