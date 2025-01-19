@@ -1,4 +1,4 @@
-package org.example.lessson11.threadpool;
+package org.example.lesson11.threadpool;
 
 import java.util.concurrent.BlockingQueue;
 

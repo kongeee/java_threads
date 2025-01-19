@@ -1,0 +1,98 @@
+Reentrance lockout problemi, bir kodun tekrar girişimlerini (reentrancy) yanlış bir şekilde kısıtlamasından kaynaklanan
+bir sorundur. Bu genellikle, bir kaynağın kilitlenmesi sırasında o kaynağa erişim için yapılan bir isteğin reddedilmesi nedeniyle
+ meydana gelir. Sorun, kilit açılmadan önce aynı kaynağa erişmesi gereken işlemlerin gereksiz yere engellenmesiyle oluşur.
+
+Reentrance Lockout’un Özellikleri
+Kilitleme Mekanizması: Genellikle bir kaynak üzerinde işlem yapılırken, başka bir işlem tarafından aynı kaynağa erişimi önlemek
+    için kullanılan bir kilitleme mekanizmasından kaynaklanır.
+Reentrancy Problemi: Bir kod, kendi kendine çağrı (örneğin, bir işlev kendisini çağırır veya bir callback mekanizmasıyla tetiklenir)
+    yapmaya çalıştığında, kilitli kaynağa erişemediği için kilitlenebilir.
+Hatalı Erişim Kontrolü: Kilitlenme mekanizması, bir işlem devam ederken aynı işlemin yeniden kaynak talebini gereksiz yere engeller.
+Örnek Senaryo: Banka Hesabı Transferi
+Bir banka uygulamasında bir kullanıcının hesabından para transferi yapıldığını düşünelim. Aşağıda basit bir örnek verelim:
+
+
+class BankAccount {
+    private int balance;
+    private boolean locked = false;
+
+    public BankAccount(int initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public synchronized void transfer(BankAccount target, int amount) {
+        if (locked) {
+            throw new IllegalStateException("Account is already in use!");
+        }
+        locked = true;
+
+        if (this.balance >= amount) {
+            this.balance -= amount;
+            target.deposit(amount);
+        }
+        locked = false;
+    }
+
+    public synchronized void deposit(int amount) {
+        if (locked) {
+            throw new IllegalStateException("Account is already in use!");
+        }
+        this.balance += amount;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+}
+Adımlar
+Transfer İşlemi Başlatılır: Kullanıcı A, Kullanıcı B'ye para göndermek için transfer metodunu çağırır.
+Reentrance Kilidi: transfer metodu sırasında kaynak kilitlenir (locked = true).
+Callback (Geri Çağırma): Transfer sırasında, deposit metodu çağrılır ve aynı kilit mekanizması tekrar devreye girer.
+Hata Durumu: deposit metodunun kilitlenmiş olduğunu fark ederek, bir IllegalStateException fırlatır. Bu, işlemin gereksiz yere başarısız olmasına neden olur.
+Çözüm
+Reentrance lockout problemini çözmek için şu yaklaşımlar kullanılabilir:
+
+Reentrant Locks Kullanımı: Java’da ReentrantLock sınıfını kullanarak kilitleme mekanizmasının reentrant olmasını sağlayabilirsiniz.
+
+
+import java.util.concurrent.locks.ReentrantLock;
+
+class BankAccount {
+    private int balance;
+    private final ReentrantLock lock = new ReentrantLock();
+
+    public BankAccount(int initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public void transfer(BankAccount target, int amount) {
+        lock.lock();
+        try {
+            if (this.balance >= amount) {
+                this.balance -= amount;
+                target.deposit(amount);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void deposit(int amount) {
+        lock.lock();
+        try {
+            this.balance += amount;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+}
+Thread-Local Variables Kullanımı: Kaynağa erişen her iş parçacığına özel bir durum saklamak için ThreadLocal kullanılabilir.
+
+Idempotent Metotlar: İşlemleri tekrar girişlere dayanıklı (idempotent) tasarlayarak sorunu önlemek mümkündür.
+
+Sonuç
+Reentrance lockout, kilitli bir kaynağa aynı iş parçacığı tarafından tekrar erişilmesi gerektiğinde yaşanan bir problemdir. Bu sorunun çözümü için doğru kilit mekanizmalarını ve reentrant tasarımı benimsemek kritik önem taşır.
