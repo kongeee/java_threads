@@ -18,7 +18,8 @@ public class ExecutorServiceSubmit {
 
 
         //runRunnableExample();
-        runCallableExample();
+        //runCallableExample();
+        runCallableAndRunnableWithVirtualThreadExample();
 
 
     }
@@ -26,7 +27,7 @@ public class ExecutorServiceSubmit {
     private static void runRunnableExample() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        Future future = executorService.submit(getRunnable("Runnable Task"));
+        Future<?> future = executorService.submit(getRunnable("Runnable Task"));
 
         System.out.println(future.isDone()); //false donecek cunku submitten hemen sonra burasi calisiyor ve muhtemelen task bitmemis olacak
 
@@ -46,12 +47,12 @@ public class ExecutorServiceSubmit {
     private static void runCallableExample() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        Future future = executorService.submit(getCallable("Callable Task"));
+        Future<String> future = executorService.submit(getCallable("Callable Task"));
 
         System.out.println(future.isDone()); //false donecek cunku submitten hemen sonra burasi calisiyor ve muhtemelen task bitmemis olacak
 
         try {
-            String callableMessage = (String) future.get(); //task bitene kadar bekler. Callable bir deger doner
+            String callableMessage = future.get(); //task bitene kadar bekler. Callable bir deger doner
             System.out.println(callableMessage);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -64,6 +65,19 @@ public class ExecutorServiceSubmit {
         executorService.shutdown();
     }
 
+    private static void runCallableAndRunnableWithVirtualThreadExample() {
+
+        try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){ //her task submit edildiginde yeni bir virtual thread olusur
+            executorService.submit(getRunnable("Runnable message (virtual thread)"));
+            Future<String> callableResult = executorService.submit(getCallable("Callable message (virtual thread)"));
+
+            System.out.println(callableResult.get());
+        } catch (Exception e){
+            throw new RuntimeException();
+        }
+
+    }
+
     private static Runnable getRunnable(String message) {
         return () -> {
             String completeMessage = Thread.currentThread().getName() + " with message: " + message;
@@ -71,7 +85,7 @@ public class ExecutorServiceSubmit {
         };
     }
 
-    private static Callable getCallable(String message) {
+    private static Callable<String> getCallable(String message) {
         return () -> {
             String completeMessage = Thread.currentThread().getName() + " with message: " + message;
             return completeMessage;
