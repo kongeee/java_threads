@@ -1,0 +1,7 @@
+- live lock (aslında threadler lock u çözmeye çalşışırken ortaya çıkan bir sorundur. sürekli yeni locklar yaratılması durumudur)
+
+- nested monitor lockout
+
+- reentrance lockout
+
+- starvation (bir thread in sürekli olarak queue da kalması ve bir türlü çalıştıralamamsıdır (öncelik almamasıdır))

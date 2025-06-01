@@ -1,0 +1,9 @@
+Deadlock oluşması için 4 duruma ihtiyaç vadır:
+
+1-) Mutual Exclusion : Bir objeye yalnızca 1 thread aynı anda erişebilmeli.
+
+2-) No Preemption    : Bir thread bir kilidi lockladığı zaman onu unlock edene kadar başka bir mekanizma bu kilidi açamamalı.
+
+3-) Hold and Wait    : Bir thread bir kilidi tutarken, başka bir kilidi kilitlemek için bir önceki kilidi tutar onu açmaz.
+
+4-) Circular Wait    : Threadler döngüsel bir bekleme paternine sahip olmalı.

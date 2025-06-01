@@ -1,0 +1,14 @@
+deadlock her zaman 2 thread ve 2 lock arasında olmak zorunda değil daha complex bir yapıda da olabilir (complex_deadlock.png)
+
+Görseldeki durumu şöyle özetleyebiliriz:
+-Her bir kilide isim verelim. A, B, C, D, E, F olsun.
+-Her bir harf db de bir tabloya karşılık gelsin.
+-Thread1 A tablosuna erişmek istiyor. A tablosu B ye bağlantılısı dolayısıyla bunu da kilitlemesi lazım.
+-B tablosu da C ile bağlantılı olduğundan C'de kilitlenmeli
+-C'de D'ye bağlı olduğundan bu da kilitlenmeli.
+-Ama aynı anda zaten Thread2 F, E, D tablolarını kilitlemiş ve D ile C bağnatılı olduğundan C yi kilitlemeye çalışıyor.
+-Ama Thrad1 C yi kilitlemişti önceden onun lockının kalkmasını bekliyor Thread2
+-D yi de Thread2 kilitlemişti, Thread1 de bunun kaldırılmasını bekliyor.
+-Sonuç olarak bir deadlock oluştu
+
+Deadlock oluşmuşken bu locklardan herhangi birini sonrada kilitlemeye gelen diğer threadler de bu lock a katılır onlar da bloklanır.
