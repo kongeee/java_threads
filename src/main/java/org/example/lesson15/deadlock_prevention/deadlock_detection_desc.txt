@@ -1,0 +1,5 @@
+-Soldaki kisimda deadlock olusmaz cunku bir cycle yoktur. thread3 lock3 u actiginda geriye dogru sirayla threadler islerini yapablir.
+
+-Sagdakinde ise deadlock vardir. Cunki cycle var
+
+-Buradaki problem bir graph porblemidir aslinda lock ve threadler graph node lara donusturulup birbirleri arasindaki iliskiler incelenmeli ve cycle tespiti yapilmalidir.
