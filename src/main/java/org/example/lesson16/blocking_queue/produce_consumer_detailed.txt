@@ -1,0 +1,41 @@
+1.
+CPU Kullanımının İyileştirilmesi ve Sunucu Yüklenmesinin Önlenmesi:
+ Bu kalıp, işi tespit eden iş parçacıklarının sayısını, bu işleri yürüten işçi iş parçacıklarının sayısından ayırarak iş yükü dağılımını sağlar.
+Özellikle çok çekirdekli sistemlerde, işleri tespit eden bir iş parçacığının doğrudan işleri tek tek işlemesi yerine, işi görev nesneleri olarak bir
+kuyruğa eklemesi ve ardından birden fazla işçi iş parçacığının bu görevleri kuyruktan alıp yürütmesi önerilir. Bu yöntemle, işçi iş parçacıklarının
+sayısı sunucudaki CPU sayısına uyacak şekilde ayarlanabilir, bu da CPU'ların daha verimli kullanılmasını sağlar. Ayrıca, binlerce iş parçacığı başlatarak
+sunucuyu gereksiz yere aşırı yüklemekten kaçınılmış olur, çünkü her iş parçacığı bellek gibi sistem kaynaklarını tüketir ve çok sayıda iş parçacığı,
+dosyaların işlenmesi için kullanılabilecek kaynakları harcar. Bu sayede aynı anda çalışamayacak gereksiz iş parçacıklarıyla sunucunun aşırı yüklenmesi
+önlenir.
+
+
+2.
+Ön Plan İş Parçacığı Gecikmesinin Azaltılması:
+Bu kalıp, özellikle kullanıcı arayüzü (UI) veya bağlantı kabul eden sunucu gibi ön planda çalışan iş parçacıklarının yanıt verme süresini (gecikmesini)
+önemli ölçüde azaltır.
+◦
+Masaüstü Uygulamalarında Kullanıcı Arayüzü Duyarlılığı:
+Bir masaüstü uygulamasında, kullanıcı arayüzünü güncelleyen ve kullanıcı olaylarına yanıt veren tek bir UI iş parçacığı olabilir.
+Eğer bu UI iş parçacığı büyük bir dosyayı işlemek gibi yoğun bir görevle meşgul olursa, kullanıcı arayüzü donmuş gibi görünür ve
+diğer kullanıcı isteklerine yanıt veremez. Bunun yerine, UI iş parçacığı sadece işi tespit eder, bir görev nesnesi oluşturur ve
+bunu bir iş kuyruğuna koyar. Bir arka plan işçi iş parçacığı bu görevi arka planda yürütür. İş bittiğinde, işçi iş parçacığı UI'ye
+ bir mesaj göndererek güncelleme yapılmasını sağlar. Bu sayede UI iş parçacığı her zaman kullanılabilir ve kullanıcı arayüzü duyarlı kalır.
+◦
+Çok İş Parçacıklı Sunucu Duyarlılığı:
+Benzer şekilde, gelen bağlantıları kabul eden tek bir iş parçacığı olan çok iş parçacıklı bir sunucuda, bu iş parçacığı gelen verileri hemen
+işlemek yerine bağlantıları bir kuyruğa ekleyebilir. Arka plan işleme iş parçacıkları daha sonra bu bağlantılardan gelen verileri işler.
+Bu, bağlantı kabul eden iş parçacığının diğer yeni gelen bağlantıları anında kabul etmeye geri dönmesini sağlar ve sunucunun genel olarak
+daha duyarlı olmasını sağlar.
+
+
+
+3.
+Geri Basınç (Back Pressure) Yönetimi:
+Üretici-Tüketici kalıbı, sistemin ön tarafının (üreticilerin) arka taraftaki (tüketicilerin) işçi iş parçacıklarına çok
+fazla baskı uyguladığı durumlarda bir geri basınç mekanizması sağlar. Eğer işçi iş parçacıkları gelen işe ayak uyduramazsa,
+kuyruk dolar. Kuyruk belirli bir kapasiteye ulaştığında (örneğin, 1000 bağlantıdan fazla alamaz hale geldiğinde), sistemin arka tarafından
+ön tarafına doğru bir geri basınç oluşur. Bu durumda, ön plan iş parçacığı (örneğin, bağlantı kabul eden iş parçacığı) arka sistemin daha fazla
+kapasitesi olmadığını anlar ve bir süreliğine yeni gelen bağlantıları kabul etmeyi bırakabilir veya yavaşlayabilir. Bu, kuyrukta biraz yer açılana
+kadar beklemeyi içerebilir. Bu, bir bloke edici kuyruk (blocking queue) kullanılarak basitçe uygulanabilir; bu durumda kuyruk dolduğunda eklemeye
+çalışan ön plan iş parçacığı otomatik olarak engellenir. Ya da ön plan iş parçacığı kuyruğun dolu olup olmadığını kontrol edip, doluysa daha
+gelişmiş davranışlar sergileyebilir. Bu, sistemin aşırı yüklenmesini önlemeye yardımcı olur.

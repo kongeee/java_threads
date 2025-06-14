@@ -14,7 +14,7 @@ public class Consumer implements Runnable {
         while (true) {
             try {
                 String data = queue.take();
-                System.out.println("Consumed: " + data);
+                System.out.println("Consumed: " + data + " by [" + Thread.currentThread().getName() + "]");
             } catch (InterruptedException e) {
                 System.err.println("Thread interrupted");
             }
