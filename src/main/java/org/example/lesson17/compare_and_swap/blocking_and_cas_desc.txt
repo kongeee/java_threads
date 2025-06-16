@@ -1,0 +1,33 @@
+1. Compare and Swap (CAS)
+•
+Tanım ve Çalışma Prensibi: CAS, bir değişkenin değerini beklenen bir değerle karşılaştıran ve eğer eşleşirse, değişkenin değerini yeni bir değerle değiştiren atomik bir fonksiyondur. İşlem başarılı olursa true, başarısız olursa false döndürür.
+•
+Atomiklik Kaynağı: CAS işlemlerinin atomikliği donanım (CPU ve yonga seti) tarafından garanti edilir. Bu sayede, aynı anda CAS'ı çalıştırmaya çalışan birden fazla iş parçacığı olsa bile, donanım birinin diğerinden önce yürütülmesini sağlar ve işletim sisteminin iş parçacıklarını engellemesine gerek kalmaz.
+•
+İş Parçacığı Davranışı: CAS kullanan iş parçacıkları asla engellenmez. İşlem başarısız olursa, iş parçacığı sürekli olarak tekrar denemeye devam eder (busy-waiting veya yoğun bekleme). Bu, iş parçacığının sürekli olarak CPU zamanı harcadığı anlamına gelir.
+•
+Java'daki Kullanımı: Java'da AtomicBoolean ve AtomicLong gibi atomik sınıflar CAS işlevselliğini kullanır. Örneğin, AtomicBoolean sınıfının compareAndSet metodu CAS'ın bir uygulamasıdır.
+•
+Kullanım Senaryoları: Kritik bölümlere girişi korumak (guard) ve iyimser kilitleme (optimistic locking) gibi senaryolarda kullanılır.
+2. Engelleme (Synchronized Blokları)
+•
+Tanım ve Çalışma Prensibi: Java'daki synchronized blokları, bir iş parçacığının başka bir iş parçacığı tarafından kullanılan bir synchronized bloğuna girmeye çalıştığında işletim sistemi (OS) veya Java Sanal Makinesi (JVM) düzeyinde engellenmesini yönetir. Blok serbest kaldığında iş parçacığının engeli kaldırılır.
+•
+Atomiklik Kaynağı: Engelleme mekanizmasının atomikliği OS veya JVM tarafından ele alınır.
+•
+İş Parçacığı Davranışı: Engellenen iş parçacığı, engellendiği sürece CPU zamanı tüketmez. Engelin ne zaman kalkacağı tam olarak bilinemez ve bu durum zaman kaybına yol açabilir.
+CAS ve Engelleme Arasındaki Temel Farklar, Avantajlar ve Dezavantajlar:
+•
+Atomiklik Mekanizması: CAS atomikliğini donanımdan alırken, engelleme OS/JVM'e dayanır.
+•
+İş Parçacığı Yönetimi: CAS'ta iş parçacıkları engellenmez ve sürekli denemeye devam eder (CPU harcar). Engellemede ise iş parçacıkları gerçek anlamda engellenir ve engelli oldukları sürece CPU harcamazlar.
+•
+Performans:
+◦
+CAS Avantajları: Bir iş parçacığının kilidi açması ile diğerinin kilitlemesi arasındaki süre genellikle daha kısadır, bu da daha yüksek işlem hacmı (throughput) sağlayabilir. Engellenme bekleme süresi olmadığı için daha hızlı yanıt verir.
+◦
+CAS Dezavantajları: İşlem başarılı olana kadar sürekli bir döngüde beklemesi nedeniyle CPU zamanı tüketir (busy-waiting). Tek CPU'lu sistemlerde performans artışı sağlamayabilir, çünkü bekleyen iş parçacığı diğerlerinin CPU zamanını kullanır. Ancak günümüzdeki çoğu CPU çok çekirdekli olduğu için bu durum genellikle bir sorun teşkil etmez.
+◦
+Engelleme Avantajları: Engellenen iş parçacıkları CPU zamanı tüketmez, bu da CPU verimliliği sağlar.
+◦
+Engelleme Dezavantajları: OS/JVM düzeyinde iş parçacıklarını engelleme ve engelini kaldırma işlemleri pahalıdır. Ayrıca, engellenen iş parçacığının engelinin tam olarak ne zaman kaldırılacağı garanti edilemez, bu da potansiyel gecikmelere yol açabilir.
