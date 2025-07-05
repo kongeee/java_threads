@@ -1,0 +1,5 @@
+* main memory'de birbirine yakın duran iki değişken farklı cpu'lar tarafından işlenmek istenebilir.
+* cache yapısında, değişkenler bloklar şeklinde memoryden alınarak cache'e ilerletilir.
+* bir değişkenin değerinde güncelleme olduğunda o değişkenin olduğu blok invalid olur.
+* o blokta başka değişkenler de olabilir ve başka cpu lar o başka değişkeni kullnamk istiyoru olabilir.
+* invalid olan cache dikkate alınmaz o cache bloğu yeniden memory den çekilir. bu da maliyet demektir

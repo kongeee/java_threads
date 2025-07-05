@@ -1,0 +1,29 @@
+* her zaman farklı nesneler içindeki değişkenlere erişmiyoruz.
+
+* aynı nesnedeki farklı değişkenleri farklı threadlerde işlediğimiz de oluyor
+
+* bunun için güzel bir çözüm var @Contended anotasyonu
+
+* bu anotasyon değişkenin ramdeki yerinde bir padding oluşturur ve diğer değişkenlerle yanyana gelmesini engeller.
+
+* aralarında boşluk olğundan aynı cache blogu içinde yer almzlar ve cache te invalide edilip ramden tekrar çekilmemiş olurkar.
+
+* gruplama da mümkün. aynı gruptakiler birbirine yakın olabilir.
+
+* @Contended("group1")
+
+* Aynı threadin kullandıklarını bir gruba diğerlerinin kullandıkalrını başka gruplara koymak mantıklı olabilir.
+
+* Bunu her yerde kullanamayız eksileri de var.
+
+* eklenen dolgular bosuna yer kaplıyor bu da fazla ram tuketımı demek
+
+* kullanırken test ederek kullanın öncesine ve sonrasına bakın (bende ise yaramadı amd 5 5600)
+
+* padding size ayarlanabilir vm options sunu ekle (-XX:ContendedPaddingWidth=64) 128 256 vs olabilir --onbellek block boyutu (byte)
+
+* jvm genelde 128 bytelık bir padding kullanır.
+
+* cpu 64, jvm 128 koyarsa ramde gerekszi yere fazladan yer ayrılmış olur zaten cpu 64 çekmiş
+
+* cpu 256, jvm 128 koyarsa dolgu yetersiz kalabilir, aynı cache bloğuna gelebilir değişkenler.

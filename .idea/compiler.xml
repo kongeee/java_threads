@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="threads" options="--enable-preview" />
+      <module name="threads" options="--enable-preview --add-exports java.base/jdk.internal.vm.annotation=ALL-UNNAMED" />
     </option>
   </component>
 </project>
