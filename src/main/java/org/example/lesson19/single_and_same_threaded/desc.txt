@@ -1,0 +1,40 @@
+**Single Threaded Server
+- Bir thread hem yeni bağlantıları alıyor (accept) hem de veriyi okuyor (read)
+- Her iki işlem de (accept ve read) bloklayıcı işlemlerdir.
+- Eğer veriyi okuma sırasında başka bir istek gelirse okuma ile meşgul olduğundan (bloklandığından) yeni gelen isteği kabul edemez.
+
+**Two Threaded Server
+- Yukarıdaki tek thread problemini çözmek için geliştirilmiştir.
+- Bir thread sürekli yeni gelebilecek olan verileri dinlerken diğer thread gelen verileri işler. Böylece sürekli dinleme sağlanır.
+- Accpet yapan thread gelen isteği hemen diğer threade devredip dinlemeye devam eder.
+- Ama bağlantıyı işleyen yani read eden ikinci thread hala tek bir işle uğraşabiliyor. O işlem yavaşsa diper istekelr beklemeye devam eder.
+
+**Multithreaded Server
+- Worker thread pool mekanizması ile çalışır.
+- İsteği alan tek bir thread vardır.
+- Gelen istekler bir queue ya aktarılır ve N tane thread bu queue dan gelen verileri tüketir (işler)
+- Sunucu eşzamanlı olarak N tane iş yapabilir ve binlerce bağlantı kabul edilip queue ya aktarılabilir.
+- Yoğun zamanlarda kuyruk uzayabilir ve server a istek atan kişinin isteği queue ya eklense bile çok geç cevap alabilir.
+- Web sunucuları gibi isteği at (neredeyse anında) cevabı al mantığında çalışan işler için güzel bir yöntem.
+- Sohbet sunucularında ise bağlantılar saatlerde açık kalıyor ama birkaç mesaj atılıyor sadece. Çoğu zaman boşta yani. Bir thread sürekli sohbeti dinlemek zorunda kaldığından başka siteği kabul edemiyor. Bu yüzden  bu tarz sunucular için uygun değil.
+
+**Two Threaded Non-Blocking Server
+- Binlerce, onbinlerce boşta çoğunlukla pasif olan (yukarıdaki son madde) bağlantıyı yönetmek için kullanılır.
+- Burada non-blocking io (engellemeyen giriş çıkış) devreye giriyor.
+- Tek bir thread slector denen yapıyla binelrce bağlantıyı aynı anda izleyebiliyor. Sadece veri okumaya veya yazmaya hazır olanlarla ilgileniyor.
+- Tek bir thread okuma-yazma işi yaptığından (diğeri sadece accept yapıyor) thread dertleriyle uğraşmak zorunda değiliz. (deadlock, race cond. vb.)
+- Sadece uygun bağlantılar alınıp işleniyor ama işleme sırasında bir engelleyici io olabilir (sunucunda veri okuma, db ye yazma vb.) bu durumda yavaşlık olabilir. Bu durumda hazır bağlantılara hizmet vermekte gecikebilir.
+- Modern cpu lar çok çekirdeklidir ama burada tek thread iş yapıyor yani 1 çekirdek kullanıyor. Donanımın tüm nimetlerinden faydalanmıyor.
+
+**Same Threaded Non-Blocking Server
+- Her çekirdek için 1 tane non-blck io thread öalıştırılarak cpu nun tüm gücünden faydalanabiliriz.
+- Bağlantı hazır olunca bir nbio thread tarafından alınıyor ve hep o thread tarafından işleniyor. Bağka bir thread bu bağlantıya dokunmuyor.
+- Her thread in kendi bağlantı seti, kendi selector u ve kendi business logic i var.
+- Diğer threadlerle paylaşılmadıkları için business logicte thread problemlerini yaşamıyoruz.
+
+**Same Threaded Non-Blocking Server 2
+- Gelen bağlantıları threadler arasında dengeli dağıtmak için load-balancing yapılmalı
+- Burada da db işlemi vs gibi uzun süren io işleri olabilir. Bunu aşmak için de ayrı bir arkaplan worker pool a işler devredilir.
+- Sequential Execution (Sıralı yürütme) problemi yaşanabilir. 2 işelm aynı threadde olsun ilk gelen 10 saniyelik, 2. si ise 100ms lik bir işlem istedi. Bu durumda 100 mslik iş 10 sn lik işi bekleyebilir.
+    Çünkü thread işleri sırayla ele alıyor. (Market alışverişinde tek kasa açık önceki 1000 tane eşya almış sende sadece sakız var ama senin önünde diye bekliyorsun)
+
